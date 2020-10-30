@@ -44,7 +44,7 @@ class BurgerBuilder extends Component {
     }
 
     purchaseContinue = () => {
-       
+        this.props.onInitPurchase();
         // const queryParams =[];
         // for(let i in this.state.ingredients){
         //     queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
@@ -106,9 +106,9 @@ class BurgerBuilder extends Component {
 }
 const mapStateToProps = state => {
     return {
-        igns : state.ingredients,
-        tpr : state.totalPrice,
-        err: state.error
+        igns : state.burgerBuilder.ingredients,
+        tpr : state.burgerBuilder.totalPrice,
+        err: state.burgerBuilder.error
     };
 };
 
@@ -116,7 +116,8 @@ const mapDispatchToProps = dispatch => {
     return {
         onAddIngredients: (ingName) => dispatch(actionTypes.addIngredient(ingName)),
         onRemoveIngredients: (ingName) => dispatch(actionTypes.removeIngredient(ingName)) ,
-        onInitIngredients : () => dispatch(actionTypes.initIngredients())
+        onInitIngredients : () => dispatch(actionTypes.initIngredients()),
+        onInitPurchase :() => dispatch(actionTypes.purchaseInit())
     };
 };
 export default connect(mapStateToProps,mapDispatchToProps) (withErrorHandler(BurgerBuilder,axios));
