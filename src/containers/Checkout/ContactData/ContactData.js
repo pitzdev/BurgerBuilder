@@ -6,7 +6,8 @@ import axios from '../../../axios-orders';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
 import withErrorHandler from '../../../hoc/withErrorHandler';
-import * as actions from '../../../store/actions/index'
+import * as actions from '../../../store/actions/index';
+import {checkValididity} from '../../../shared/utility';
 export class ContactData extends Component {
     state ={
         orderForm:{            
@@ -124,24 +125,12 @@ export class ContactData extends Component {
         const orders ={
             ingredients : this.props.igns,
             price: this.props.price,      
-            orderData : formData
+            orderData : formData,
+            userId: this.props.userId
         }; 
-        this.props.onOrderBurger(orders);
+        this.props.onOrderBurger(orders,this.props.token);
     }
-    checkValididity(value,rules){
-        let isValid = true;
-        if(rules.required){
-            isValid = value.trim() !== '' && isValid;
-        }
-        if(rules.minLength){
-            isValid = value.length >= rules.minLength && isValid;
-        }
-        if(rules.maxLength){
-            isValid = value.length <= rules.maxLength && isValid;
-        }
-        
-        return isValid;
-    }
+ 
     inputChangedHandler = (event,inputIdentifier) =>{
      
          const updatedOrderForm ={
@@ -151,7 +140,7 @@ export class ContactData extends Component {
              ...updatedOrderForm[inputIdentifier]
          };
          updatedFormElement.value =event.target.value;
-         updatedFormElement.valid =this.checkValididity(updatedFormElement.value,updatedFormElement.validation);
+         updatedFormElement.valid =checkValididity(updatedFormElement.value,updatedFormElement.validation);
          updatedFormElement.touched = true;
          updatedOrderForm[inputIdentifier] = updatedFormElement;
          //Validate form
@@ -205,13 +194,15 @@ const mapStateToProps = state => {
     return {
         igns : state.burgerBuilder.ingredients,
         price : state.burgerBuilder.totalPrice,
-        ldg : state.order.loading
+        ldg : state.order.loading,
+        token: state.auth.token,
+        userId: state.auth.userId
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onOrderBurger: (orderData) => dispatch(actions.purchaseBurger(orderData))
+        onOrderBurger: (orderData,token) => dispatch(actions.purchaseBurger(orderData,token))
     };
 };
 

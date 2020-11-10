@@ -5,20 +5,20 @@ import classes from './SideDrawer.css';
 import BackDrop from '../../UI/Backdrop/Backdrop';
 import Aux from '../../../hoc/_Aux'
 
-const sideDrawer = (porps) =>{
+const sideDrawer = (props) =>{
     let attachedClasses =[classes.SideDrawer, classes.Close];
-    if(porps.open){
+    if(props.open){
         attachedClasses=[classes.SideDrawer, classes.Open];
     }
     return(
         <Aux>
-            <BackDrop show={porps.open} clicked={porps.closed} open/>
-            <div className={attachedClasses.join(' ')}>
+            <BackDrop show={props.open} clicked={props.closed} open/>
+            <div className={attachedClasses.join(' ')} onClick={props.closed}> 
                <div className={classes.Logo}>
         <Logo/>
         </div>
             <nav>
-                <NavigationItems />
+                <NavigationItems  isAuthenticated ={props.isAuth} />
             </nav>
         </div>
         </Aux>        

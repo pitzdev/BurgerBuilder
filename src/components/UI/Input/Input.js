@@ -4,9 +4,7 @@ const input =(props) => {
     let inputElement = null;
     let validationError = null;
     const inPutClasses =[classes.inputElement];
-    console.log("touched :" +props.touched);
-    console.log("invalid :" +props.invalid);
-    console.log("shouldValidate :" +props.shouldValidate);
+    
     if(props.invalid && props.shouldValidate && props.touched){
         inPutClasses.push(classes.InValid);
     }
